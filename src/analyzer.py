@@ -1,19 +1,38 @@
-from analyzer import count_errors, find_error_patterns, detect_anomalies, plot_errors
+import matplotlib.pyplot as plt
 
-def main():
-    df = load_logs("../logs/sample_logs.csv")
+def count_errors(df):
+    """
+    Returns total number of ERROR logs.
+    """
+    return df[df['level'] == 'ERROR'].shape[0]
 
-    total_errors = count_errors(df)
-    print(f"Total Errors: {total_errors}")
 
-    error_patterns = find_error_patterns(df)
-    print("\nError Patterns:\n", error_patterns)
+def find_error_patterns(df):
+    """
+    Returns frequency of each error message.
+    """
+    return df[df['level'] == 'ERROR']['message'].value_counts()
 
-    warnings = detect_anomalies(df)
-    print("\nWarnings:\n", warnings)
 
-    # 🔥 NEW LINE (important)
-    plot_errors(error_patterns)
+def detect_anomalies(df):
+    """
+    Returns all WARNING logs (treated as anomalies).
+    """
+    return df[df['level'] == 'WARN']
 
-if __name__ == "__main__":
-    main()
+
+def plot_errors(error_counts):
+    """
+    Plots error frequency as a bar chart.
+    """
+    if error_counts.empty:
+        print("No errors to plot.")
+        return
+
+    error_counts.plot(kind='bar')
+    plt.title("Error Frequency")
+    plt.xlabel("Error Type")
+    plt.ylabel("Count")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
