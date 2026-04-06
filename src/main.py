@@ -1,3 +1,4 @@
+from log_parser import load_logs
 from analyzer import count_errors, find_error_patterns, detect_anomalies, plot_errors
 
 def main():
@@ -12,7 +13,7 @@ def main():
     warnings = detect_anomalies(df)
     print("\nWarnings:\n", warnings)
 
-    # 🔥 NEW LINE (important)
+    # 🔥 ADD THIS LINE (IMPORTANT)
     plot_errors(error_patterns)
 
 if __name__ == "__main__":
